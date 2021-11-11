@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "ebay-front",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}

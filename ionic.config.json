@@ -1,0 +1,7 @@
+{
+  "name": "ebay-front",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
