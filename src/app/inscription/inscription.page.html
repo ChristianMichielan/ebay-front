@@ -22,7 +22,7 @@
             <ion-label position="floating">
               Pseudo <span class="obligatoire">*</span>
             </ion-label>
-            <ion-input type="text" [(ngModel)]="pseudo"></ion-input>
+            <ion-input type="text" [(ngModel)]="pseudo" name="pseudo"></ion-input>
           </ion-item>
         </ion-col>
         <ion-col size-lg="6" size-md="6" size-sm="6" size="12">
@@ -30,7 +30,7 @@
             <ion-label position="floating">
               Prénom <span class="obligatoire">*</span>
             </ion-label>
-            <ion-input type="text" [(ngModel)]="prenom"></ion-input>
+            <ion-input type="text" [(ngModel)]="prenom" name="prenom"></ion-input>
           </ion-item>
         </ion-col>
         <ion-col size-lg="6" size-md="6" size-sm="6" size="12">
@@ -38,7 +38,7 @@
             <ion-label position="floating">
               Nom <span class="obligatoire">*</span>
             </ion-label>
-            <ion-input type="text" [(ngModel)]="nom"></ion-input>
+            <ion-input type="text" [(ngModel)]="nom" name="nom"></ion-input>
           </ion-item>
         </ion-col>
         <ion-col size-lg="6" size-md="6" size-sm="6" size="12">
@@ -46,7 +46,7 @@
             <ion-label position="floating">
               Email <span class="obligatoire">*</span>
             </ion-label>
-            <ion-input type="email" [(ngModel)]="email"></ion-input>
+            <ion-input type="email" [(ngModel)]="email" name="email"></ion-input>
           </ion-item>
         </ion-col>
         <ion-col size-lg="6" size-md="6" size-sm="6" size="12">
@@ -54,7 +54,7 @@
             <ion-label position="floating">
               Mot de passe <span class="obligatoire">*</span>
             </ion-label>
-            <ion-input type="password" [(ngModel)]="motDePasse"></ion-input>
+            <ion-input type="password" [(ngModel)]="motDePasse" name="motDePasse"></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -64,6 +64,6 @@
     <p id="txtChampObligatoire">* Champs obligatoires</p>
   </ion-row>
   <div class="ion-text-center">
-    <ion-button id="buttonInscription" color="primary" href="choix-domaine" (click)="creerUnCompte()">S'inscrire</ion-button>
+    <ion-button id="buttonInscription" color="primary" (click)="creerUnCompte()">S'inscrire</ion-button>
   </div>
 </ion-content>

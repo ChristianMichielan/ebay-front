@@ -21,7 +21,7 @@ export class InscriptionPage implements OnInit {
   // Attributs techniques
   images: LocalFile[] = [];
   imageDir = 'stored-images';
-
+  geoLocAdressData = [];
   // Attributs utilisateur
   pseudo;
   nom;
@@ -30,13 +30,14 @@ export class InscriptionPage implements OnInit {
   email;
   geoLocLat;
   geoLocLong;
+  adresse;
   url = 'http://localhost:3000';
+  urlApiExterne = 'http://api.positionstack.com/v1/reverse';
 
   constructor(private platform: Platform, private loadingCtrl: LoadingController,
               private http: HttpClient, private geolocation: Geolocation) { }
 
   ngOnInit() {
-    this.loadFiles();
   }
 
 
@@ -44,12 +45,14 @@ export class InscriptionPage implements OnInit {
 
   creerUnCompte() {
     this.obtenirLocalisationActuelle();
+    this.obtenirAdresseParGeolocalisation();
     this.http.post(this.url + '/utilisateur', {pseudoU: this.pseudo, nomU: this.nom,
       prenomU: this.prenom, motDePasseU: this.motDePasse, emailU: this.email, geolocalisationLatU: this.geoLocLat,
-      geolocalisationLongU: this.geoLocLong
+      geolocalisationLongU: this.geoLocLong, adresseU: this.adresse
     }).subscribe(data => {
       if (data !== undefined) {
-        window.location.replace('/tabs');
+        console.log(data);
+        //window.location.replace('/tabs');
       }
     });
   }
@@ -61,6 +64,16 @@ export class InscriptionPage implements OnInit {
       this.geoLocLong = resp.coords.longitude;
     }).catch((error) => {
       console.log('Impossible de récupérer la géolocalisation', error);
+    });
+  }
+
+  obtenirAdresseParGeolocalisation() {
+    this.http.get(this.urlApiExterne + '?access_key=3138b74b848c3b260600f3aba67e62be&query='
+      + this.geoLocLat + ',' + this.geoLocLong + '&limit=1',{}).subscribe(data => {
+      if (data !== undefined) {
+        this.geoLocAdressData = Object.values(data);
+        this.adresse = this.geoLocAdressData[0][0].label;
+      }
     });
   }
 
