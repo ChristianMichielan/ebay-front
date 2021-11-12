@@ -10,7 +10,7 @@ export class ConnexionPage implements OnInit {
 
   pseudo;
   motDePasse;
-  url = 'localhost:3000/api/v1/';
+  url = 'http://localhost:3000';
   reponse;
 
   constructor(public http: HttpClient) { }
@@ -19,12 +19,12 @@ export class ConnexionPage implements OnInit {
   }
 
   connecter() {
-    this.http.post(this.url + '/token', {pseudo: this.pseudo, motDePasse: this.motDePasse}).subscribe(data => {
+    this.http.post(this.url + '/token', {pseudoU: this.pseudo, motDePasseU: this.motDePasse}).subscribe(data => {
       this.reponse = data;
-      console.log(data);
+      if (data !== undefined) {
+        window.location.replace('/tabs');
+      }
     });
-    console.log(this.reponse);
-    //window.location.replace('/tabs');
   }
 
 }
