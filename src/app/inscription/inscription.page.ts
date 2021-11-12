@@ -22,6 +22,7 @@ export class InscriptionPage implements OnInit {
   images: LocalFile[] = [];
   imageDir = 'stored-images';
   geoLocAdressData = [];
+
   // Attributs utilisateur
   pseudo;
   nom;
@@ -31,6 +32,9 @@ export class InscriptionPage implements OnInit {
   geoLocLat;
   geoLocLong;
   adresse;
+  base64;
+
+  // URLs
   url = 'http://localhost:3000';
   urlApiExterne = 'http://api.positionstack.com/v1/reverse';
 
@@ -40,19 +44,21 @@ export class InscriptionPage implements OnInit {
   ngOnInit() {
   }
 
-
   /***** Gestion envoi des données  ***/
 
-  creerUnCompte() {
+  async creerUnCompte() {
     this.obtenirLocalisationActuelle();
     this.obtenirAdresseParGeolocalisation();
     this.http.post(this.url + '/utilisateur', {pseudoU: this.pseudo, nomU: this.nom,
-      prenomU: this.prenom, motDePasseU: this.motDePasse, emailU: this.email, geolocalisationLatU: this.geoLocLat,
+      prenomU: this.prenom, motDePasseU: this.motDePasse, mailU: this.email, geolocalisationLatU: this.geoLocLat,
       geolocalisationLongU: this.geoLocLong, adresseU: this.adresse
     }).subscribe(data => {
       if (data !== undefined) {
-        console.log(data);
-        //window.location.replace('/tabs');
+        const result = Object.values(data);
+        const idUtilisateur = result[0];
+        // Ajout de l'image de profil pour l'utilisateur qui a été ajouté
+        this.startUpload(idUtilisateur);
+        window.location.replace('/tabs');
       }
     });
   }
@@ -93,6 +99,7 @@ export class InscriptionPage implements OnInit {
   async saveImage(photo: Photo) {
     const base64Data = await this.readAsBase64(photo);
     console.log(base64Data);
+    this.base64 = base64Data;
     const fileName = new Date().getTime() + '.jpeg';
     const savedFile = await Filesystem.writeFile({
       directory: Directory.Data,
@@ -125,21 +132,22 @@ export class InscriptionPage implements OnInit {
     reader.readAsDataURL(blob);
   });
 
-  async startUpload() {
+  async startUpload(idUtilisateur) {
     const file = this.images[this.images.length - 1];
     const response = await fetch(file.data);
     const blob = await response.blob();
     const formData = new FormData();
-    formData.append('file', blob, file.name);
-    this.uploadData(formData);
+    formData.append('avatar', blob, file.name);
+    this.uploadData(formData, idUtilisateur);
   }
 
-  async uploadData(formData: FormData) {
+  async uploadData(formData: FormData, idUtilisateur) {
     const loading = await this.loadingCtrl.create({
       message: 'Upload en cours...',
     });
     await loading.present();
-    const url = 'http://localhost:8888/images/upload.php';
+    console.log(idUtilisateur);
+    const url = 'http://localhost:3000/utilisateur/' + idUtilisateur + '/photo';
 
     this.http.post(url, formData).pipe(
       finalize(() => {
