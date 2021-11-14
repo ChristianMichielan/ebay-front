@@ -42,28 +42,33 @@ export class InscriptionPage implements OnInit {
               private http: HttpClient, private geolocation: Geolocation) { }
 
   ngOnInit() {
+    this.obtenirLocalisationActuelle();
   }
 
-  /***** Gestion envoi des données  ***/
+  /***** Gestion envoi des données pour la création du compte  *****/
 
   async creerUnCompte() {
-    this.obtenirLocalisationActuelle();
-    this.obtenirAdresseParGeolocalisation();
-    this.http.post(this.url + '/utilisateur', {pseudoU: this.pseudo, nomU: this.nom,
-      prenomU: this.prenom, motDePasseU: this.motDePasse, mailU: this.email, geolocalisationLatU: this.geoLocLat,
-      geolocalisationLongU: this.geoLocLong, adresseU: this.adresse
-    }).subscribe(data => {
-      if (data !== undefined) {
-        const result = Object.values(data);
-        const idUtilisateur = result[0];
-        // Ajout de l'image de profil pour l'utilisateur qui a été ajouté
-        this.startUpload(idUtilisateur);
-        window.location.replace('/tabs');
-      }
-    });
+    this.obtenirAdresseParGeolocalisation().then( result => {
+      this.http.post(this.url + '/utilisateur', {pseudoU: this.pseudo, nomU: this.nom,
+        prenomU: this.prenom, motDePasseU: this.motDePasse, mailU: this.email, geolocalisationLatU: this.geoLocLat,
+        geolocalisationLongU: this.geoLocLong, adresseU: this.adresse
+      }).subscribe(data => {
+        if (data !== undefined) {
+          const resultat = Object.values(data);
+          // On récupère l'id de l'utilisateur qui vient d'être inséré avec la requête post pour pouvoir lui ajouter sa photo
+          const idUtilisateur = resultat[0];
+          // Upload de l'image de profil pour l'utilisateur qui a été ajouté
+          this.startUpload(idUtilisateur).then( result2 => {
+            window.location.replace('/navigation');
+          });
+        }
+      });
+      });
   }
 
-  /***  Gestion geolocalisation ***/
+  /*****  Gestion geolocalisation *****/
+
+  /* Permet d'obtenir la localisation (latitude, longitude) de l'utilisateur */
   obtenirLocalisationActuelle() {
     this.geolocation.getCurrentPosition().then((resp) => {
       this.geoLocLat = resp.coords.latitude;
@@ -73,9 +78,12 @@ export class InscriptionPage implements OnInit {
     });
   }
 
-  obtenirAdresseParGeolocalisation() {
-    this.http.get(this.urlApiExterne + '?access_key=3138b74b848c3b260600f3aba67e62be&query='
-      + this.geoLocLat + ',' + this.geoLocLong + '&limit=1',{}).subscribe(data => {
+  /* Permet d'obtenir une adresse pour l'utilisateur suivant sa géolocalisation */
+  async obtenirAdresseParGeolocalisation() {
+    // Appel de l'API externe Position Track
+    await this.http.get(this.urlApiExterne + '?access_key=3138b74b848c3b260600f3aba67e62be&query='
+      + this.geoLocLat + ',' + this.geoLocLong + '&limit=1',{}).toPromise().then(data => {
+        console.log(data);
       if (data !== undefined) {
         this.geoLocAdressData = Object.values(data);
         this.adresse = this.geoLocAdressData[0][0].label;
@@ -83,8 +91,9 @@ export class InscriptionPage implements OnInit {
     });
   }
 
-  /**** Gestion IMAGE *****/
+  /***** Gestion IMAGE *****/
 
+  /* Ouvre la gallerie du téléphone pour choisir une photo */
   async selectionnerImage() {
     const image = await Camera.getPhoto({
       quality: 90,
@@ -96,9 +105,10 @@ export class InscriptionPage implements OnInit {
       this.saveImage(image);
     }
   }
+
+  /* Enregistre l'image en cache */
   async saveImage(photo: Photo) {
     const base64Data = await this.readAsBase64(photo);
-    console.log(base64Data);
     this.base64 = base64Data;
     const fileName = new Date().getTime() + '.jpeg';
     const savedFile = await Filesystem.writeFile({
@@ -109,6 +119,7 @@ export class InscriptionPage implements OnInit {
     this.loadFiles();
   }
 
+  /* Conversion de l'image en Blob */
   async readAsBase64(photo: Photo) {
     if (this.platform.is('hybrid')) {
        const file = await Filesystem.readFile({
@@ -123,6 +134,7 @@ export class InscriptionPage implements OnInit {
     }
   }
 
+  /* Conversion de d'un blob en base64 */
   convertBlobToBase64 = (blob: Blob) => new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onerror = reject;
@@ -132,21 +144,24 @@ export class InscriptionPage implements OnInit {
     reader.readAsDataURL(blob);
   });
 
+  /* Lancer l'upload de l'image vers le back-end */
   async startUpload(idUtilisateur) {
+    // On ne prend que la dernière image avatar enregistrée dans le cache
     const file = this.images[this.images.length - 1];
     const response = await fetch(file.data);
+    // Conversion en blob et en fichier blob
     const blob = await response.blob();
     const formData = new FormData();
     formData.append('avatar', blob, file.name);
-    this.uploadData(formData, idUtilisateur);
+    await this.uploadData(formData, idUtilisateur);
   }
 
+  /* Contact de l'API back-end */
   async uploadData(formData: FormData, idUtilisateur) {
     const loading = await this.loadingCtrl.create({
       message: 'Upload en cours...',
     });
     await loading.present();
-    console.log(idUtilisateur);
     const url = 'http://localhost:3000/utilisateur/' + idUtilisateur + '/photo';
 
     this.http.post(url, formData).pipe(
@@ -158,6 +173,7 @@ export class InscriptionPage implements OnInit {
     });
   }
 
+  /* Chargement les images en cache */
   async loadFiles() {
     this.images = [];
 
@@ -181,6 +197,7 @@ export class InscriptionPage implements OnInit {
     });
   }
 
+  /* Charge la dernière image mise en cache pour l'afficher sur la page*/
   async loadFileData(fileNames: string[]) {
     let i = 0;
     for (const f of fileNames) {

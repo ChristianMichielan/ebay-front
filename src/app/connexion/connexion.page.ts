@@ -22,7 +22,7 @@ export class ConnexionPage implements OnInit {
     this.http.post(this.url + '/token', {pseudoU: this.pseudo, motDePasseU: this.motDePasse}).subscribe(data => {
       this.reponse = data;
       if (data !== undefined) {
-        window.location.replace('/tabs');
+        window.location.replace('/navigation');
       }
     });
   }
