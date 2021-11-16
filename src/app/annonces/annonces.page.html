@@ -1,0 +1,30 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Liste des annonces
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Annonces</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- <ion-searchbar (ionInput)="filterList($event)" placeholder="Rechercher"></ion-searchbar> -->
+  <ion-list>
+    <ion-item *ngFor="let bien of aBiens">
+      <ion-avatar slot="start">
+        <img [src]="bien.photoB">
+      </ion-avatar>
+      <ion-label>
+        <h2>{{ bien.nomB }}</h2>
+        <p>{{ bien.descriptionB }}</p>
+        <p>{{bien.prixPlancherB}}€</p>
+        <p>Statut : {{bien.etatB}}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
