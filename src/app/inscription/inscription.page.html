@@ -1,0 +1,69 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/connexion" icon="chevron-back-outline"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Inscription</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form>
+      <div class="ion-text-center">
+        <ion-item *ngFor="let file of images">
+            <ion-img [src]="file.data"></ion-img>
+        </ion-item>
+        <ion-button (click)="selectionnerImage()">Prendre une photo</ion-button>
+      </div>
+    <ion-grid>
+      <ion-row>
+        <ion-col size-lg="6" size-md="6" size-sm="6" size="12">
+          <ion-item>
+            <ion-label position="floating">
+              Pseudo <span class="obligatoire">*</span>
+            </ion-label>
+            <ion-input type="text" [(ngModel)]="pseudo" name="pseudo"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size-lg="6" size-md="6" size-sm="6" size="12">
+          <ion-item>
+            <ion-label position="floating">
+              Prénom <span class="obligatoire">*</span>
+            </ion-label>
+            <ion-input type="text" [(ngModel)]="prenom" name="prenom"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size-lg="6" size-md="6" size-sm="6" size="12">
+          <ion-item>
+            <ion-label position="floating">
+              Nom <span class="obligatoire">*</span>
+            </ion-label>
+            <ion-input type="text" [(ngModel)]="nom" name="nom"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size-lg="6" size-md="6" size-sm="6" size="12">
+          <ion-item>
+            <ion-label position="floating">
+              Email <span class="obligatoire">*</span>
+            </ion-label>
+            <ion-input type="email" [(ngModel)]="email" name="email"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size-lg="6" size-md="6" size-sm="6" size="12">
+          <ion-item>
+            <ion-label position="floating">
+              Mot de passe <span class="obligatoire">*</span>
+            </ion-label>
+            <ion-input type="password" [(ngModel)]="motDePasse" name="motDePasse"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+  <ion-row>
+    <p id="txtChampObligatoire">* Champs obligatoires</p>
+  </ion-row>
+  <div class="ion-text-center">
+    <ion-button id="buttonInscription" color="primary" (click)="creerUnCompte()">S'inscrire</ion-button>
+  </div>
+</ion-content>
