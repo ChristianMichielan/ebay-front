@@ -1,17 +1,35 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 3
+      Mes enchères
     </ion-title>
   </ion-toolbar>
+
+  <ion-segment (ionChange)="segmentChanged($event)" [(ngModel)]="segmentModel" value={{segmentModel}}>
+    <ion-segment-button value="en_cours">
+      <ion-label>En cours</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="livre">
+      <ion-label>Livraisons</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="vendre">
+      <ion-label>A vendre</ion-label>
+    </ion-segment-button>
+  </ion-segment>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+  <ion-list>
+    <ion-item *ngFor="let bien of aBiens">
+      <ion-avatar slot="start">
+        <img [src]="bien.photoB">
+      </ion-avatar>
+      <ion-label>
+        <h2>{{ bien.nomB }}</h2>
+        <p>{{ bien.descriptionB }}</p>
+        <p>{{bien.prixPlancherB}}€</p>
+        <p>Statut : {{bien.etatB}}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>
