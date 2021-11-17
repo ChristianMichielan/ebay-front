@@ -22,6 +22,9 @@ export class ConnexionPage implements OnInit {
     this.http.post(this.url + '/token', {pseudoU: this.pseudo, motDePasseU: this.motDePasse}).subscribe(data => {
       this.reponse = data;
       if (data !== undefined) {
+        let utilisateur = [];
+        utilisateur = Object.values(data);
+        localStorage.setItem('idU', utilisateur[0].idU);
         window.location.replace('/navigation');
       }
     });

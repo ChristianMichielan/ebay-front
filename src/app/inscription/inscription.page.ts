@@ -63,7 +63,7 @@ export class InscriptionPage implements OnInit {
           });
         }
       });
-      });
+    });
   }
 
   /*****  Gestion geolocalisation *****/

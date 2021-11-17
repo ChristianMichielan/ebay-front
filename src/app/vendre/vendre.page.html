@@ -1,17 +1,49 @@
-<ion-header [translucent]="true">
+<ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title>
-      Tab 2
-    </ion-title>
+    <ion-title>Publier une nouvelle annonce</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+<ion-content>
+  <form>
+    <div class="ion-text-center">
+      <ion-item *ngFor="let file of images">
+        <ion-img [src]="file.data"></ion-img>
+      </ion-item>
+      <ion-button (click)="selectionnerImage()">Prendre une photo</ion-button>
+    </div>
+    <ion-grid>
+      <ion-row>
+        <ion-col size-lg="6" size-md="6" size-sm="6" size="12">
+          <ion-item>
+            <ion-label position="floating">
+              Nom <span class="obligatoire">*</span>
+            </ion-label>
+            <ion-input type="text" [(ngModel)]="nom" name="nom"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size-lg="6" size-md="6" size-sm="6" size="12">
+          <ion-item>
+            <ion-label position="floating">Description <span class="obligatoire">*</span></ion-label>
+            <ion-textarea [(ngModel)]="description" name="description"></ion-textarea>
+          </ion-item>
+        </ion-col>
+        <ion-col size-lg="6" size-md="6" size-sm="6" size="12">
+          <ion-item>
+            <ion-label position="floating">
+              Prix planché <span class="obligatoire">*</span>
+            </ion-label>
+            <ion-input type="integer" [(ngModel)]="prixPlanche" name="prixPlanche"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+  <ion-row>
+    <p id="txtChampObligatoire">* Champs obligatoires</p>
+  </ion-row>
+  <div class="ion-text-center">
+    <ion-button id="buttonInscription" (click)="creerUnBien()" color="primary">Publier</ion-button>
+  </div>
 </ion-content>
+
