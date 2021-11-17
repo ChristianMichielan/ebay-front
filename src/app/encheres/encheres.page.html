@@ -20,14 +20,14 @@
 
 <ion-content [fullscreen]="true">
   <ion-list>
-    <ion-item *ngFor="let bien of aBiens">
+    <ion-item *ngFor="let bien of bienUtilisateur">
       <ion-avatar slot="start">
         <img [src]="bien.photoB">
       </ion-avatar>
       <ion-label>
         <h2>{{ bien.nomB }}</h2>
         <p>{{ bien.descriptionB }}</p>
-        <p>{{bien.prixPlancherB}}€</p>
+        <p>{{bien.prix}}€</p>
         <p>Statut : {{bien.etatB}}</p>
       </ion-label>
     </ion-item>
