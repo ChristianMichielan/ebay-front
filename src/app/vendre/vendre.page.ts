@@ -34,7 +34,7 @@ export class VendrePage {
 
   constructor(private platform: Platform, private loadingCtrl: LoadingController,
               private http: HttpClient) {
-    this.idUtilisateur = localStorage.getItem('id');
+    this.idUtilisateur = localStorage.getItem('idU');
   }
 
   /***** Gestion envoi des données pour la création du compte  *****/

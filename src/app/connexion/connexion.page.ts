@@ -24,7 +24,8 @@ export class ConnexionPage implements OnInit {
       if (data !== undefined) {
         let utilisateur = [];
         utilisateur = Object.values(data);
-        localStorage.setItem('idU', utilisateur[0].idU);
+        console.log(utilisateur);
+        localStorage.setItem('idU', utilisateur[0]);
         window.location.replace('/navigation');
       }
     });

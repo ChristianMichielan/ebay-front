@@ -5,11 +5,12 @@
     </ion-title>
   </ion-toolbar>
 
+  <!-- Segment avec les différentes sections offertes à l'utilisateur -->
   <ion-segment (ionChange)="segmentChanged($event)" [(ngModel)]="segmentModel" value={{segmentModel}}>
     <ion-segment-button value="en_cours">
       <ion-label>En cours</ion-label>
     </ion-segment-button>
-    <ion-segment-button value="livre">
+    <ion-segment-button value="livrer">
       <ion-label>Livraisons</ion-label>
     </ion-segment-button>
     <ion-segment-button value="vendre">
@@ -19,17 +20,85 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-list>
-    <ion-item *ngFor="let bien of bienUtilisateur">
-      <ion-avatar slot="start">
-        <img [src]="bien.photoB">
-      </ion-avatar>
-      <ion-label>
-        <h2>{{ bien.nomB }}</h2>
-        <p>{{ bien.descriptionB }}</p>
-        <p>{{bien.prix}}€</p>
-        <p>Statut : {{bien.etatB}}</p>
-      </ion-label>
-    </ion-item>
-  </ion-list>
+  <!-- Affiches les annonces récupérées -->
+  <div *ngIf="this.bienUtilisateur !== null">
+    <div [ngSwitch]="segmentModel">
+      <!-- Aucun bien trouvé pour la section en cours -->
+      <div *ngIf="this.bienUtilisateur.length === 0" id="message-container">
+        {{ this.messageAucunBien() }}
+        <br/>
+        <mat-icon aria-hidden="false" aria-label="Example home icon">home</mat-icon>
+      </div>
+
+      <!-- Liste des biens achetés sur lesquels l'utilisateur a réalisé une enchère -->
+      <div *ngIf="this.bienUtilisateur.length > 0">
+        <ion-list *ngSwitchCase="'en_cours'">
+          <ion-item *ngFor="let bien of bienUtilisateur">
+            <ion-avatar slot="start">
+              <img [src]="bien.photoB">
+            </ion-avatar>
+            <ion-label>
+              <h2>{{ bien.nomB }}</h2>
+              <p>{{ bien.descriptionB }}</p>
+              <p>{{bien.prix}}€</p>
+              <p>Statut : {{this.formaterEtatAffaireAVendre(bien.etatB)}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+
+      <!-- Liste des biens acheté par l'utilisateur et qui sont encours de livraison ou livré -->
+      <ion-list *ngSwitchCase="'livre'">
+        <ion-item *ngFor="let bien of bienUtilisateur">
+          <ion-avatar slot="start">
+            <img [src]="bien.photoB">
+          </ion-avatar>
+          <ion-label>
+            <h2>{{ bien.nomB }}</h2>
+            <p>{{ bien.descriptionB }}</p>
+            <p>{{bien.prix}}€</p>
+            <p>Statut : {{this.formaterEtatAffaireAVendre(bien.etatB)}}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+
+      <!-- Liste des biens à vendre et ou vendu pas l'utilisateur -->
+      <ion-list *ngSwitchCase="'vendre'">
+        <ion-item *ngFor="let bien of bienUtilisateur">
+          <ion-avatar slot="start">
+            <img [src]="bien.photoB">
+          </ion-avatar>
+          <ion-label>
+            <h2>{{ bien.nomB }}</h2>
+            <p>{{ bien.descriptionB }}</p>
+            <p>{{bien.prix}}€</p>
+            <p>Statut : {{this.formaterEtatAffaireAVendre(bien.etatB)}}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+
+  <!-- Skeleton screen : chargement des annonces -->
+  <div *ngIf="this.bienUtilisateur === null">
+    <ion-list>
+      <ion-item *ngFor="let i of [].constructor(7)">
+        <ion-avatar slot="start">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-avatar>
+        <ion-label>
+          <h3>
+            <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+          </h3>
+          <p>
+            <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+          </p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+
 </ion-content>
