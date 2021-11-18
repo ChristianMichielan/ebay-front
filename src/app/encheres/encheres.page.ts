@@ -135,7 +135,7 @@ export class EncheresPage {
    */
   private viderTableau() {
     if(this.bienUtilisateur !== null) {
-      this.bienUtilisateur.splice(0, this.bienUtilisateur.length);
+      this.bienUtilisateur = null;
     }
   }
 
@@ -185,6 +185,26 @@ export class EncheresPage {
     }
   }
 
+  /**
+   *
+   * @private
+   */
+  private messageAucunBienIcon() {
+      switch (this.segmentModel) {
+        case this.segmentEnum.EN_COURS:
+          return 'basket';
+          break;
+        case this.segmentEnum.LIVRER:
+          return 'mail-open';
+          break;
+        case this.segmentEnum.VENDRE:
+          return 'cash';
+          break;
+        default:
+          console.log('erreur sur le segment');
+          break;
+      }
+  }
 
 
 }

@@ -17,6 +17,8 @@
       <ion-label>A vendre</ion-label>
     </ion-segment-button>
   </ion-segment>
+  <!-- Barre de chargement -->
+  <ion-progress-bar *ngIf="this.bienUtilisateur === null" type="indeterminate"></ion-progress-bar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
@@ -27,7 +29,8 @@
       <div *ngIf="this.bienUtilisateur.length === 0" id="message-container">
         {{ this.messageAucunBien() }}
         <br/>
-        <mat-icon aria-hidden="false" aria-label="Example home icon">home</mat-icon>
+        <br/>
+        <ion-icon name="{{this.messageAucunBienIcon()}}" size="large"></ion-icon>
       </div>
 
       <!-- Liste des biens achetés sur lesquels l'utilisateur a réalisé une enchère -->
@@ -78,27 +81,4 @@
       </ion-list>
     </div>
   </div>
-
-  <!-- Skeleton screen : chargement des annonces -->
-  <div *ngIf="this.bienUtilisateur === null">
-    <ion-list>
-      <ion-item *ngFor="let i of [].constructor(7)">
-        <ion-avatar slot="start">
-          <ion-skeleton-text animated></ion-skeleton-text>
-        </ion-avatar>
-        <ion-label>
-          <h3>
-            <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
-          </h3>
-          <p>
-            <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
-          </p>
-          <p>
-            <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
-          </p>
-        </ion-label>
-      </ion-item>
-    </ion-list>
-  </div>
-
 </ion-content>
