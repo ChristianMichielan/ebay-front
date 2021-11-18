@@ -44,7 +44,7 @@
               <h2>{{ bien.nomB }}</h2>
               <p>{{ bien.descriptionB }}</p>
               <p>{{bien.prix}}€</p>
-              <p>Statut : {{this.formaterEtatAffaireAVendre(bien.etatB)}}</p>
+              <p>{{this.formaterEtatAffaireAVendre(bien.etatB)}}</p>
             </ion-label>
           </ion-item>
         </ion-list>
@@ -60,7 +60,7 @@
             <h2>{{ bien.nomB }}</h2>
             <p>{{ bien.descriptionB }}</p>
             <p>{{bien.prix}}€</p>
-            <p>Statut : {{this.formaterEtatAffaireAVendre(bien.etatB)}}</p>
+            <p>{{this.formaterEtatAffaireAVendre(bien.etatB)}}</p>
           </ion-label>
         </ion-item>
       </ion-list>
@@ -74,8 +74,8 @@
           <ion-label>
             <h2>{{ bien.nomB }}</h2>
             <p>{{ bien.descriptionB }}</p>
-            <p>{{bien.prix}}€</p>
-            <p>Statut : {{this.formaterEtatAffaireAVendre(bien.etatB)}}</p>
+            <p align="right">{{bien.prix}} €</p>
+            <p align="right">{{this.formaterEtatAffaireAVendre(bien.etatB)}}</p>
           </ion-label>
         </ion-item>
       </ion-list>
