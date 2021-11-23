@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { DomSanitizer } from '@angular/platform-browser'
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -20,12 +20,12 @@ export class ProfilPage implements OnInit {
   pseudoU;
   photoU;
   idU;
-  constructor(public alertController: AlertController,private router: Router,private httpClient: HttpClient , private sanitizer: DomSanitizer, private activatedRoute: ActivatedRoute ) { 
-
+  constructor(public alertController: AlertController,private router: Router,
+              private httpClient: HttpClient , private sanitizer: DomSanitizer, private activatedRoute: ActivatedRoute ) {
   }
 
   ngOnInit() {
-    this.getInfoUser()
+    this.getInfoUser();
   }
 
   getInfoUser(){
@@ -34,12 +34,12 @@ export class ProfilPage implements OnInit {
     this.readApi(this.url + '/utilisateur/'+ this.idU)
       .subscribe(data => {
         this.profil = Object.values(data)[0];
-        console.log(this.profil)
+        console.log(this.profil);
         this.prenomU =this.profil[0].prenomU;
         this.nomU = this.profil[0].nomU;
         this.mailU = this.profil[0].mailU;
-        this.pseudoU = this.profil[0].pseudoU
-        this.adresseU = this.profil[0].adresseU
+        this.pseudoU = this.profil[0].pseudoU;
+        this.adresseU = this.profil[0].adresseU;
         this.pseudoU = this.profil[0].pseudoU;
         // Traitement de l'image base64 pour la convertir en image visualisable sur le front
         this.photoU = this.sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,'
@@ -50,7 +50,7 @@ export class ProfilPage implements OnInit {
   readApi(url: string) {
     return this.httpClient.get(url);
   }
-  
+
   async logout() {
     const alert = await this.alertController.create({
       header : 'Deconnexion',
@@ -60,19 +60,19 @@ export class ProfilPage implements OnInit {
          role : 'Cancel',
          cssClass: 'secondary',
          handler: () => {
-           console.log("Confirmer Annulation");
+           console.log('Confirmer Annulation');
          }
         },
          {text :'Déconnexion',
           handler: ()=> {
-            console.log("OK");
+            console.log('OK');
             localStorage.clear();
-            this.router.navigateByUrl("/" );
+            this.router.navigateByUrl('/' );
           }
          }]
     });
     await alert.present();
-    let result =  await alert.onDidDismiss();
+    const result =  await alert.onDidDismiss();
     console.log(result);
   }
 }
