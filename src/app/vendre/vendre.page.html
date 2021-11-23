@@ -1,6 +1,8 @@
-<ion-header class="ion-no-border">
+<ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Publier une nouvelle annonce</ion-title>
+    <ion-title>
+      Publier une nouvelle annonce
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -10,7 +12,7 @@
       <ion-item *ngFor="let file of images">
         <ion-img [src]="file.data"></ion-img>
       </ion-item>
-      <ion-button (click)="selectionnerImage()">Prendre une photo</ion-button>
+      <ion-button (click)="selectionnerImage()"><ion-icon id="icon_camera" name="camera-outline"></ion-icon>Prendre une photo</ion-button>
     </div>
     <ion-grid>
       <ion-row>
@@ -40,7 +42,7 @@
     </ion-grid>
   </form>
   <ion-row>
-    <p id="txtChampObligatoire">* Champs obligatoires</p>
+    <p id="txtChampObligatoire"><span class="obligatoire">*</span> Champs obligatoires</p>
   </ion-row>
   <div class="ion-text-center">
     <ion-button id="buttonInscription" (click)="creerUnBien()" color="primary">Publier</ion-button>
