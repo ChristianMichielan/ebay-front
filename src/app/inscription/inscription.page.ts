@@ -57,10 +57,14 @@ export class InscriptionPage implements OnInit {
           const resultat = Object.values(data);
           // On récupère l'id de l'utilisateur qui vient d'être inséré avec la requête post pour pouvoir lui ajouter sa photo
           const idUtilisateur = resultat[0];
-          // Upload de l'image de profil pour l'utilisateur qui a été ajouté
-          this.startUpload(idUtilisateur).then( result2 => {
+          if (this.images[this.images.length - 1] !== undefined) {
+            // Upload de l'image de profil pour l'utilisateur qui a été ajouté
+            this.startUpload(idUtilisateur).then( result2 => {
+              window.location.replace('/navigation');
+            });
+          } else {
             window.location.replace('/navigation');
-          });
+          }
         }
       });
     });
