@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Router} from '@angular/router';
 
 @Component({
   selector: 'app-annonces',
@@ -9,9 +10,10 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class AnnoncesPage implements OnInit {
   aBiens = [];
+  aBiensBackup = [];
   url = 'http://localhost:3000';
 
-  constructor(public http: HttpClient, private sanitizer: DomSanitizer) {}
+  constructor(public http: HttpClient, private sanitizer: DomSanitizer, private router: Router) {}
 
   ngOnInit() {
     this.getBiens();
@@ -26,10 +28,30 @@ export class AnnoncesPage implements OnInit {
           bien.photoB = this.sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,'
             + bien.photoB);
         });
+        this.aBiensBackup = Object.values(data)[0];
       });
   }
 
   readApi(url: string) {
     return this.http.get(url);
+  }
+
+  filterList(evt) {
+    this.aBiens = this.aBiensBackup;
+    const searchTerm = evt.srcElement.value;
+
+    if (!searchTerm) {
+      return;
+    }
+
+    this.aBiens = this.aBiensBackup.filter(currentBien => {
+      if (currentBien.nomB && searchTerm) {
+        return (currentBien.nomB.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1);
+      }
+    });
+  }
+
+  afficherDetail(idBien) {
+    this.router.navigate(['bien-detail/' + idBien]);
   }
 }
