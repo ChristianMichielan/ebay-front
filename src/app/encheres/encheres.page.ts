@@ -1,13 +1,16 @@
-import { Component } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {DomSanitizer} from "@angular/platform-browser";
+import {interval, Observable} from 'rxjs';
+import {takeWhile} from "rxjs/operators";
+
 
 @Component({
   selector: 'app-encheres',
   templateUrl: 'encheres.page.html',
   styleUrls: ['encheres.page.scss']
 })
-export class EncheresPage {
+export class EncheresPage implements OnInit, OnDestroy{
 
   bienUtilisateur = null;
   segmentModel = 'en_cours';
@@ -24,6 +27,10 @@ export class EncheresPage {
     NON_VENDU: 'non_vendu',
   };
   idUtilisateur = null;
+  nbMilliSecondsDansSeconde = 1000;
+  nbMinutesDansHeure = 60;
+  nbSecondsDansMinute  = 60;
+  dureeVieAnnonceMin = 5;
 
   /**
    * Constructeur de la page
@@ -80,7 +87,6 @@ export class EncheresPage {
   private getBiensVendus() {
     this.readApi(this.url + '/utilisateur/' + this.idUtilisateur + '/bien/avendre')
       .subscribe((data) => {
-        console.log(Object.values(data)[0]);
         this.bienUtilisateur = Object.values(data)[0];
         // Traitement de l'image base64 pour la convertir en image visualisable sur le front
         this.bienUtilisateur.forEach(bien => {
@@ -96,11 +102,39 @@ export class EncheresPage {
   private getBiensEnCours() {
     this.readApi(this.url + '/utilisateur/' + this.idUtilisateur + '/bien/encours')
       .subscribe((data) => {
-        console.log(Object.values(data)[0]);
         this.bienUtilisateur = Object.values(data)[0];
         // Traitement de l'image base64 pour la convertir en image visualisable sur le front
         this.bienUtilisateur.forEach(bien => {
           bien.photoB = this.sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' + bien.photoB);
+
+          // Configuration du compteur
+          bien.compteurMinute = new Observable();
+          bien.compteurSeconde = new Observable();
+          bien.compteurMinute = 5;
+          bien.compteurSeconde = 0;
+
+          // indicateur qui indique si la vente est terminé
+          let terminee = false;
+
+          // Transforme la date de publication du bien en un objet date
+          const datePublication = new Date(bien.dateCreationB);
+
+          // Ajoute 5 min à la date de publication (durée de vie de l'annonce)
+          datePublication.setMinutes(datePublication.getMinutes() + this.dureeVieAnnonceMin);
+
+          // Actualise la valeur toutes les secondes tant que la vente n'est pas terminée
+          interval(1000)
+            .pipe(takeWhile(() => !terminee))
+            .subscribe(x => {
+              if (bien.compteurSeconde === 0 && bien.compteurMinute === 0) {
+                terminee = true;
+              } else {
+                // Calcul la différence
+                const dateDifference = datePublication.getTime() - new  Date().getTime();
+                bien.compteurSeconde = Math.floor((dateDifference) / (this.nbMilliSecondsDansSeconde) % this.nbSecondsDansMinute);
+                bien.compteurMinute = Math.floor((dateDifference) / (this.nbMilliSecondsDansSeconde * this.nbMinutesDansHeure) % this.nbSecondsDansMinute);
+              }
+            });
         });
       });
   }
@@ -112,7 +146,6 @@ export class EncheresPage {
   private getBiensLivraisons() {
     this.readApi(this.url + '/utilisateur/' + this.idUtilisateur + '/bien/livraisons')
       .subscribe((data) => {
-        console.log(Object.values(data)[0]);
         this.bienUtilisateur = Object.values(data)[0];
         // Traitement de l'image base64 pour la convertir en image visualisable sur le front
         this.bienUtilisateur.forEach(bien => {
@@ -127,6 +160,33 @@ export class EncheresPage {
    */
   readApi(url: string) {
     return this.http.get(url);
+  }
+
+  /**
+   * Rafraichit l'écran à l'aide du refresher
+   * @param event
+   */
+  doRefresh(event) {
+    switch (this.segmentModel) {
+      case 'livrer':
+        console.log('Le segment a changé : ' + this.segmentModel);
+        this.viderTableau();
+        this.getBiensLivraisons();
+        break;
+      case 'vendre':
+        console.log('Le segment a changé : ' + this.segmentModel);
+        this.viderTableau();
+        this.getBiensVendus();
+        break;
+      default:
+        console.log('Le segment a changé (default) : ' + this.segmentModel);
+        this.viderTableau();
+        this.getBiensEnCours();
+        break;
+    }
+
+    // Fin de l'animation de chargement
+    event.target.complete();
   }
 
   /**
@@ -148,16 +208,12 @@ export class EncheresPage {
     switch (etat) {
       case this.etatBiensEnum.EN_COURS:
         return 'Vente en cours';
-        break;
       case this.etatBiensEnum.VENDU:
         return 'Saisir livraison';
-        break;
       case this.etatBiensEnum.LIVRE:
         return 'Livré';
-        break;
       case this.etatBiensEnum.NON_VENDU:
         return 'Non vendu';
-        break;
       default:
         console.log('Erreur : etat du bien inconnu.');
         break;
@@ -172,13 +228,10 @@ export class EncheresPage {
     switch (this.segmentModel) {
       case this.segmentEnum.EN_COURS:
         return 'Aucune enchère en cours';
-        break;
       case this.segmentEnum.LIVRER:
         return 'Aucune livraison passée ou à venir';
-        break;
       case this.segmentEnum.VENDRE:
         return 'Aucun bien à vendre';
-        break;
       default:
         console.log('erreur sur le segment');
         break;
@@ -186,25 +239,42 @@ export class EncheresPage {
   }
 
   /**
-   *
+   * Affiche une icon personnalisé à l'utilisateur en fonction de la section dans laquelle il se trouve
    * @private
    */
   private messageAucunBienIcon() {
       switch (this.segmentModel) {
         case this.segmentEnum.EN_COURS:
           return 'basket';
-          break;
         case this.segmentEnum.LIVRER:
           return 'mail-open';
-          break;
         case this.segmentEnum.VENDRE:
           return 'cash';
-          break;
         default:
           console.log('erreur sur le segment');
           break;
       }
   }
 
+  /**
+   * Met à jour la couleur du compteur en fonction du temps restant
+   * @private
+   */
+  private couleurCompteur(minute) {
+    if(minute > 3) {
+      return 'green';
+    }
+
+    if (minute <= 3 && minute >= 1) {
+      return 'orange';
+    }
+
+    if(minute < 1) {
+      return 'red';
+    }
+
+    // Default
+    return 'black';
+  }
 
 }

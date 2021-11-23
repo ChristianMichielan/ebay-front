@@ -22,6 +22,11 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <!-- Rafraichit les annonces du segment sélectionné -->
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <!-- Affiches les annonces récupérées -->
   <div *ngIf="this.bienUtilisateur !== null">
     <div [ngSwitch]="segmentModel">
@@ -43,42 +48,51 @@
             <ion-label>
               <h2>{{ bien.nomB }}</h2>
               <p>{{ bien.descriptionB }}</p>
-              <p>{{bien.prix}}€</p>
-              <p>{{this.formaterEtatAffaireAVendre(bien.etatB)}}</p>
+              <p>{{ bien.prix }}€</p>
+              <p *ngIf="bien.compteurMinute !== 0 || bien.compteurSeconde !== 0" style="color:{{ this.couleurCompteur(bien.compteurMinute) }}">
+                {{ bien.compteurMinute }} : {{ bien.compteurSeconde }}
+              </p>
+              <p *ngIf="bien.compteurMinute === 0 && bien.compteurSeconde === 0" style="color: red">
+                Vente terminée
+              </p>
             </ion-label>
           </ion-item>
         </ion-list>
       </div>
 
       <!-- Liste des biens acheté par l'utilisateur et qui sont encours de livraison ou livré -->
-      <ion-list *ngSwitchCase="'livre'">
-        <ion-item *ngFor="let bien of bienUtilisateur">
-          <ion-avatar slot="start">
-            <img [src]="bien.photoB">
-          </ion-avatar>
-          <ion-label>
-            <h2>{{ bien.nomB }}</h2>
-            <p>{{ bien.descriptionB }}</p>
-            <p>{{bien.prix}}€</p>
-            <p>{{this.formaterEtatAffaireAVendre(bien.etatB)}}</p>
-          </ion-label>
-        </ion-item>
-      </ion-list>
+      <div *ngIf="this.bienUtilisateur.length > 0">
+        <ion-list *ngSwitchCase="'livrer'">
+          <ion-item *ngFor="let bien of bienUtilisateur">
+            <ion-avatar slot="start">
+              <img [src]="bien.photoB">
+            </ion-avatar>
+            <ion-label>
+              <h2>{{ bien.nomB }}</h2>
+              <p>{{ bien.descriptionB }}</p>
+              <p>{{ bien.prix }}€</p>
+              <p>{{ this.formaterEtatAffaireAVendre(bien.etatB) }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
 
       <!-- Liste des biens à vendre et ou vendu pas l'utilisateur -->
-      <ion-list *ngSwitchCase="'vendre'">
-        <ion-item *ngFor="let bien of bienUtilisateur">
-          <ion-avatar slot="start">
-            <img [src]="bien.photoB">
-          </ion-avatar>
-          <ion-label>
-            <h2>{{ bien.nomB }}</h2>
-            <p>{{ bien.descriptionB }}</p>
-            <p align="right">{{bien.prix}} €</p>
-            <p align="right">{{this.formaterEtatAffaireAVendre(bien.etatB)}}</p>
-          </ion-label>
-        </ion-item>
-      </ion-list>
+      <div *ngIf="this.bienUtilisateur.length > 0">
+        <ion-list *ngSwitchCase="'vendre'">
+          <ion-item *ngFor="let bien of bienUtilisateur">
+            <ion-avatar slot="start">
+              <img [src]="bien.photoB">
+            </ion-avatar>
+            <ion-label>
+              <h2>{{ bien.nomB }}</h2>
+              <p>{{ bien.descriptionB }}</p>
+              <p align="right">{{ bien.prix }} €</p>
+              <p align="right">{{ this.formaterEtatAffaireAVendre(bien.etatB) }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
     </div>
   </div>
 </ion-content>
