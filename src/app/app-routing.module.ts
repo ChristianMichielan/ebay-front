@@ -23,6 +23,11 @@ const routes: Routes = [
     loadChildren: () => import('./profil/profil.module').then( m => m.ProfilPageModule)
   },
   {
+    path: 'profil/:idU',
+    loadChildren: () => import('./profil/profil.module').then( m => m.ProfilPageModule)
+  },
+
+  {
     path: 'bien-detail',
     loadChildren: () => import('./bien-detail/bien-detail.module').then( m => m.BienDetailPageModule)
   },
