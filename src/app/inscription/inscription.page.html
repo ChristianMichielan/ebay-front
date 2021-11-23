@@ -11,9 +11,12 @@
   <form>
       <div class="ion-text-center">
         <ion-item *ngFor="let file of images">
-            <ion-img [src]="file.data"></ion-img>
+            <ion-img id="imageToDisplay" [src]="file.data"></ion-img>
         </ion-item>
-        <ion-button (click)="selectionnerImage()"><ion-icon id="icon_camera" name="camera-outline"></ion-icon>Prendre une photo</ion-button>
+        <ion-item *ngIf="this.images.length === 0">
+          <ion-img id="placeholderImg" src="../assets/img/placeholder.png"></ion-img>
+        </ion-item>
+        <ion-button id="btnPhoto" (click)="selectionnerImage()"><ion-icon id="icon_camera" name="camera-outline"></ion-icon>Prendre une photo</ion-button>
       </div>
     <ion-grid>
       <ion-row>
