@@ -38,7 +38,7 @@
         <ion-icon name="{{this.messageAucunBienIcon()}}" size="large"></ion-icon>
       </div>
 
-      <!-- Liste des biens achetés sur lesquels l'utilisateur a réalisé une enchère -->
+      <!-- Liste des biens sur lesquels l'utilisateur a réalisé une enchère -->
       <div *ngIf="this.bienUtilisateur.length > 0">
         <ion-list *ngSwitchCase="'en_cours'">
           <ion-item *ngFor="let bien of bienUtilisateur">
@@ -70,8 +70,7 @@
             <ion-label>
               <h2>{{ bien.nomB }}</h2>
               <p>{{ bien.descriptionB }}</p>
-              <p>{{ bien.prix }}€</p>
-              <p>{{ this.formaterEtatAffaireAVendre(bien.etatB) }}</p>
+              <p style="color:{{ this.couleurEtatLivraison(bien.etatB) }}">{{ this.formaterEtatAffaireLivraison(bien.etatB) }}</p>
             </ion-label>
           </ion-item>
         </ion-list>
@@ -87,8 +86,8 @@
             <ion-label>
               <h2>{{ bien.nomB }}</h2>
               <p>{{ bien.descriptionB }}</p>
-              <p align="right">{{ bien.prix }} €</p>
-              <p align="right">{{ this.formaterEtatAffaireAVendre(bien.etatB) }}</p>
+              <p>{{ bien.prix }} €</p>
+              <p style="color:{{ this.couleurEtatAVendre(bien.etatB) }}">{{ this.formaterEtatAffaireAVendre(bien.etatB) }}</p>
             </ion-label>
           </ion-item>
         </ion-list>

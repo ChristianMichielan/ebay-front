@@ -200,7 +200,7 @@ export class EncheresPage implements OnInit, OnDestroy{
   }
 
   /**
-   * Formate l'affichage des biens vendus de l'utilisateur
+   * Formate l'affichage des biens avec une enchère en cours (segemnt en cours) de l'utilisateur
    * @param etat
    * @private
    */
@@ -277,4 +277,56 @@ export class EncheresPage implements OnInit, OnDestroy{
     return 'black';
   }
 
+  /**
+   * Formate l'affichage des biens acheté par l'utilisateur (segment livraison) de l'utilisateur
+   * @param etat
+   * @private
+   */
+  private formaterEtatAffaireLivraison(etat) {
+    switch (etat) {
+      case this.etatBiensEnum.VENDU:
+        return 'En attente de livraison';
+      case this.etatBiensEnum.LIVRE:
+        return 'Livré';
+      default:
+        console.log('Erreur : etat du bien inconnu.');
+        break;
+    }
+  }
+
+  /**
+   * Formate la couleur de l'état de livraion (segment Livraison)
+   * @param etat
+   * @private
+   */
+  private couleurEtatLivraison(etat) {
+    switch (etat) {
+      case this.etatBiensEnum.VENDU:
+        return 'orange';
+      case this.etatBiensEnum.LIVRE:
+        return 'green';
+      default:
+        console.log('Erreur : etat du bien inconnu.');
+        break;
+    }
+  }
+
+  /**
+   * Formate la couleur de l'état de la vente de l'utilisateur
+   * @param etat
+   * @private
+   */
+  private couleurEtatAVendre(etat) {
+    switch (etat) {
+      case this.etatBiensEnum.VENDU:
+        return 'orange';
+      case this.etatBiensEnum.NON_VENDU:
+        return 'red';
+      case this.etatBiensEnum.LIVRE:
+        return 'green';
+      default:
+        console.log('Erreur : etat du bien inconnu.');
+        break;
+    }
+  }
 }
