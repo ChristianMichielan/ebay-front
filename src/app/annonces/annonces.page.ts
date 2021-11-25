@@ -9,8 +9,17 @@ import { Router} from '@angular/router';
   styleUrls: ['annonces.page.scss']
 })
 export class AnnoncesPage implements OnInit {
+  // Attributs génériques
   aBiens = [];
   aBiensBackup = [];
+
+  // Minuteur
+  nbMilliSecondsDansSeconde = 1000;
+  nbMinutesDansHeure = 60;
+  nbSecondsDansMinute  = 60;
+  dureeVieAnnonceMin = 5;
+
+  // URL
   url = 'http://localhost:3000';
 
   constructor(public http: HttpClient, private sanitizer: DomSanitizer, private router: Router) {}

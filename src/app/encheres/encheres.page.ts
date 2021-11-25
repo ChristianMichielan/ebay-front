@@ -1,8 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {DomSanitizer} from "@angular/platform-browser";
+import {HttpClient} from '@angular/common/http';
+import {DomSanitizer} from '@angular/platform-browser';
 import {interval, Observable} from 'rxjs';
-import {takeWhile} from "rxjs/operators";
+import {takeWhile} from 'rxjs/operators';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -35,7 +36,7 @@ export class EncheresPage implements OnInit, OnDestroy{
   /**
    * Constructeur de la page
    */
-  constructor(public http: HttpClient, private sanitizer: DomSanitizer) {}
+  constructor(public http: HttpClient, private sanitizer: DomSanitizer, private router: Router) {}
 
   /**
    * A l'initialisation de la page on charge les biens pour lesquelles l'utilisateur a une enchère en cours
@@ -58,6 +59,7 @@ export class EncheresPage implements OnInit, OnDestroy{
   /**
    * Evenement lors du changement d'onglet dans le segment
    * Charge les annonces qui correspond au segment
+   *
    * @param event
    */
   segmentChanged(event: any) {
@@ -82,6 +84,7 @@ export class EncheresPage implements OnInit, OnDestroy{
 
   /**
    * Récupère les biens vendus et proposé par l'utilisateur de l'utilisateur
+   *
    * @private
    */
   private getBiensVendus() {
@@ -97,6 +100,7 @@ export class EncheresPage implements OnInit, OnDestroy{
 
   /**
    * Récupère les biens sur lesquelles l'utilisateur a réalisé une enchère la plus haute pour un bien.
+   *
    * @private
    */
   private getBiensEnCours() {
@@ -132,7 +136,8 @@ export class EncheresPage implements OnInit, OnDestroy{
                 // Calcul la différence
                 const dateDifference = datePublication.getTime() - new  Date().getTime();
                 bien.compteurSeconde = Math.floor((dateDifference) / (this.nbMilliSecondsDansSeconde) % this.nbSecondsDansMinute);
-                bien.compteurMinute = Math.floor((dateDifference) / (this.nbMilliSecondsDansSeconde * this.nbMinutesDansHeure) % this.nbSecondsDansMinute);
+                bien.compteurMinute = Math.floor((dateDifference) / (this.nbMilliSecondsDansSeconde * this.nbMinutesDansHeure) %
+                  this.nbSecondsDansMinute);
               }
             });
         });
@@ -141,6 +146,7 @@ export class EncheresPage implements OnInit, OnDestroy{
 
   /**
    * Retourne les livraisons d'un utilisateur (biens achetés et biens reçu).
+   *
    * @private
    */
   private getBiensLivraisons() {
@@ -156,6 +162,7 @@ export class EncheresPage implements OnInit, OnDestroy{
 
   /**
    * Execute la requête API
+   *
    * @param url
    */
   readApi(url: string) {
@@ -164,6 +171,7 @@ export class EncheresPage implements OnInit, OnDestroy{
 
   /**
    * Rafraichit l'écran à l'aide du refresher
+   *
    * @param event
    */
   doRefresh(event) {
@@ -191,6 +199,7 @@ export class EncheresPage implements OnInit, OnDestroy{
 
   /**
    * Vide le tableau des biens de l'utilsateur
+   *
    * @private
    */
   private viderTableau() {
@@ -201,6 +210,7 @@ export class EncheresPage implements OnInit, OnDestroy{
 
   /**
    * Formate l'affichage des biens avec une enchère en cours (segemnt en cours) de l'utilisateur
+   *
    * @param etat
    * @private
    */
@@ -222,6 +232,7 @@ export class EncheresPage implements OnInit, OnDestroy{
 
   /**
    * Affiche un message personnalisé à l'utilsiateur en fonction de la section dans laquelle il se trouve
+   *
    * @private
    */
   private messageAucunBien() {
@@ -240,6 +251,7 @@ export class EncheresPage implements OnInit, OnDestroy{
 
   /**
    * Affiche une icon personnalisé à l'utilisateur en fonction de la section dans laquelle il se trouve
+   *
    * @private
    */
   private messageAucunBienIcon() {
@@ -258,6 +270,7 @@ export class EncheresPage implements OnInit, OnDestroy{
 
   /**
    * Met à jour la couleur du compteur en fonction du temps restant
+   *
    * @private
    */
   private couleurCompteur(minute) {
@@ -279,6 +292,7 @@ export class EncheresPage implements OnInit, OnDestroy{
 
   /**
    * Formate l'affichage des biens acheté par l'utilisateur (segment livraison) de l'utilisateur
+   *
    * @param etat
    * @private
    */
@@ -296,6 +310,7 @@ export class EncheresPage implements OnInit, OnDestroy{
 
   /**
    * Formate la couleur de l'état de livraion (segment Livraison)
+   *
    * @param etat
    * @private
    */
@@ -313,6 +328,7 @@ export class EncheresPage implements OnInit, OnDestroy{
 
   /**
    * Formate la couleur de l'état de la vente de l'utilisateur
+   *
    * @param etat
    * @private
    */
@@ -328,5 +344,9 @@ export class EncheresPage implements OnInit, OnDestroy{
         console.log('Erreur : etat du bien inconnu.');
         break;
     }
+  }
+
+  private afficherFormulaireLivraison(idBien) {
+    this.router.navigate(['livraison/' + idBien]);
   }
 }

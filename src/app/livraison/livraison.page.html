@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/navigation/encheres" icon="chevron-back-outline"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Saisir livraison</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-text-center">
+    <img [src]="photoB" alt="" id="photoBien">
+  </div>
+  <div class="ion-text-left">
+    <h3 class="align-left">{{nomB}}</h3>
+    <h5 class="align-left">{{prixEnchereCourante}}€</h5>
+  </div>
+  <div class="ion-text-left">
+    <div style="margin-left: 10px;">
+      Acheteur :
+    </div>
+    <div style="margin-left: 30px;">
+      <br/>
+      Nom : {{nomU}}
+      <br>
+      Prenom : {{prenomU}}
+      <br>
+      Adresse : {{adresseU}}
+    </div>
+  </div>
+  <form *ngIf="etatB !== 'livre'">
+    <ion-grid>
+      <ion-row>
+        <ion-col size-lg="6" size-md="6" size-sm="6" size="12">
+          <ion-item>
+            <ion-label position="floating">
+              Date de livraison
+            </ion-label>
+            <ion-input type="date" name="datelivraison" [(ngModel)]="dateL" required></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <div class="ion-text-center">
+      <ion-button id="buttonInscription" color="primary" type="submit" (click)="fixerLivraison()">Enregistrer livraison</ion-button>
+    </div>
+  </form>
+  <div class="ion-text-center" *ngIf="etatB === 'livre'">
+    <h2 id="livraisonOK">Livraison effectuée</h2>
+  </div>
+</ion-content>
