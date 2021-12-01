@@ -346,7 +346,9 @@ export class EncheresPage implements OnInit, OnDestroy{
     }
   }
 
-  private afficherFormulaireLivraison(idBien) {
-    this.router.navigate(['livraison/' + idBien]);
+  private afficherFormulaireLivraison(idBien, etatB) {
+    if (etatB === 'vendu') {
+      this.router.navigate(['livraison/' + idBien]);
+    }
   }
 }

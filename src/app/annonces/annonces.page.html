@@ -24,7 +24,12 @@
         <p>{{ bien.descriptionB }}</p>
         <p *ngIf="bien.prixEnchereCourante === null">Prix courant : {{bien.prixPlancherB}}€</p>
         <p *ngIf="bien.prixEnchereCourante !== null">Prix courant : {{ bien.prixEnchereCourante}}€</p>
-        <p>Statut : En cours</p>
+        <p *ngIf="bien.compteurMinute !== 0 || bien.compteurSeconde !== 0" style="color:{{ this.couleurCompteur(bien.compteurMinute) }}">
+          {{ bien.compteurMinute }} : {{ bien.compteurSeconde }}
+        </p>
+        <p *ngIf="bien.compteurMinute === 0 && bien.compteurSeconde === 0" style="color: red">
+          Vente terminée
+        </p>
       </ion-label>
     </ion-item>
   </ion-list>
