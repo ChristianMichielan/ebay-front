@@ -19,6 +19,7 @@ export class BienDetailPage implements OnInit {
   prixPlancherB;
   prixEnchereCourante;
   prixProposeEnchere;
+  utilisateurIdU;
 
   // URLs
   url = 'http://localhost:3000';
@@ -27,6 +28,7 @@ export class BienDetailPage implements OnInit {
 
   ngOnInit() {
     this.obtenirDetailBien();
+    this.idU = localStorage.getItem('idU');
   }
 
   readApi(url: string) {
@@ -36,11 +38,12 @@ export class BienDetailPage implements OnInit {
   /* Permet d'obtenir toutes les informations d'un bien spécifique */
   obtenirDetailBien() {
     this.idB = this.activatedRoute.snapshot.paramMap.get('idB');
-    this.readApi('http://localhost:3000/bien/' + this.idB)
+    this.readApi(this.url + '/bien/' + this.idB)
       .subscribe((data) => {
         this.aBiens = Object.values(data);
         this.nomB = this.aBiens[0][0].nomB;
         this.descriptionB = this.aBiens[0][0].descriptionB;
+        this.utilisateurIdU = this.aBiens[0][0].UTILISATEURidU;
         this.prixEnchereCourante = this.aBiens[0][0].prixEnchereCourante;
         this.prixPlancherB = this.aBiens[0][0].prixPlancherB;
         // Traitement de l'image base64 pour la convertir en image visualisable sur le front

@@ -79,7 +79,7 @@
       <!-- Liste des biens à vendre et ou vendu pas l'utilisateur -->
       <div *ngIf="this.bienUtilisateur.length > 0">
         <ion-list *ngSwitchCase="'vendre'">
-          <ion-item *ngFor="let bien of bienUtilisateur">
+          <ion-item *ngFor="let bien of bienUtilisateur" (click)="afficherFormulaireLivraison(bien.idB, bien.etatB)">
             <ion-avatar slot="start">
               <img [src]="bien.photoB">
             </ion-avatar>

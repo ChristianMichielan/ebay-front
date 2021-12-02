@@ -48,7 +48,6 @@ export class InscriptionPage implements OnInit {
   /***** Gestion envoi des données pour la création du compte  *****/
 
   async creerUnCompte() {
-    this.obtenirAdresseParGeolocalisation().then( result => {
       this.http.post(this.url + '/utilisateur', {pseudoU: this.pseudo, nomU: this.nom,
         prenomU: this.prenom, motDePasseU: this.motDePasse, mailU: this.email, geolocalisationLatU: this.geoLocLat,
         geolocalisationLongU: this.geoLocLong, adresseU: this.adresse
@@ -67,7 +66,6 @@ export class InscriptionPage implements OnInit {
           }
         }
       });
-    });
   }
 
   /*****  Gestion geolocalisation *****/
@@ -77,6 +75,7 @@ export class InscriptionPage implements OnInit {
     this.geolocation.getCurrentPosition().then((resp) => {
       this.geoLocLat = resp.coords.latitude;
       this.geoLocLong = resp.coords.longitude;
+      this.obtenirAdresseParGeolocalisation();
     }).catch((error) => {
       console.log('Impossible de récupérer la géolocalisation', error);
     });
