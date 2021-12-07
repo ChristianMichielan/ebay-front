@@ -13,17 +13,28 @@
     </ion-toolbar>
   </ion-header>
 
-  <!-- <ion-searchbar (ionInput)="filterList($event)" placeholder="Rechercher"></ion-searchbar> -->
+  <ion-searchbar (ionInput)="filterList($event)" placeholder="Rechercher"></ion-searchbar>
+  <div *ngIf="this.aBiens.length === 0" id="message-container">
+    <p>Aucune annonce disponible</p>
+    <br>
+    <ion-icon name="alarm" size="large"></ion-icon>
+  </div>
   <ion-list>
-    <ion-item *ngFor="let bien of aBiens">
+    <ion-item *ngFor="let bien of aBiens" (click)="afficherDetail(bien.idB)">
       <ion-avatar slot="start">
         <img [src]="bien.photoB">
       </ion-avatar>
       <ion-label>
         <h2>{{ bien.nomB }}</h2>
         <p>{{ bien.descriptionB }}</p>
-        <p>{{bien.prixPlancherB}}€</p>
-        <p>Statut : {{bien.etatB}}</p>
+        <p *ngIf="bien.prixEnchereCourante === null">Prix courant : {{bien.prixPlancherB}}€</p>
+        <p *ngIf="bien.prixEnchereCourante !== null">Prix courant : {{ bien.prixEnchereCourante}}€</p>
+        <p *ngIf="bien.compteurMinute !== 0 || bien.compteurSeconde !== 0" style="color:{{ this.couleurCompteur(bien.compteurMinute) }}">
+          {{ bien.compteurMinute }} : {{ bien.compteurSeconde }}
+        </p>
+        <p *ngIf="bien.compteurMinute === 0 && bien.compteurSeconde === 0" style="color: red">
+          Vente terminée
+        </p>
       </ion-label>
     </ion-item>
   </ion-list>

@@ -21,7 +21,30 @@ const routes: Routes = [
   {
     path: 'profil',
     loadChildren: () => import('./profil/profil.module').then( m => m.ProfilPageModule)
+  },
+  {
+    path: 'profil/:idU',
+    loadChildren: () => import('./profil/profil.module').then( m => m.ProfilPageModule)
+  },
+
+  {
+    path: 'bien-detail',
+    loadChildren: () => import('./bien-detail/bien-detail.module').then( m => m.BienDetailPageModule)
+  },
+  {
+    path: 'bien-detail/:idB',
+    loadChildren: () => import('./bien-detail/bien-detail.module').then( m => m.BienDetailPageModule)
+  },
+  {
+    path: 'livraison',
+    loadChildren: () => import('./livraison/livraison.module').then( m => m.LivraisonPageModule)
+  },
+  {
+    path: 'livraison/:idB',
+    loadChildren: () => import('./livraison/livraison.module').then( m => m.LivraisonPageModule)
   }
+
+
 ];
 @NgModule({
   imports: [

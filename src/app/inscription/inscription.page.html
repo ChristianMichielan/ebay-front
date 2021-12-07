@@ -11,9 +11,12 @@
   <form>
       <div class="ion-text-center">
         <ion-item *ngFor="let file of images">
-            <ion-img [src]="file.data"></ion-img>
+            <ion-img id="imageToDisplay" [src]="file.data"></ion-img>
         </ion-item>
-        <ion-button (click)="selectionnerImage()">Prendre une photo</ion-button>
+        <ion-item *ngIf="this.images.length === 0">
+          <ion-img id="placeholderImg" src="../assets/img/placeholder.png"></ion-img>
+        </ion-item>
+        <ion-button id="btnPhoto" (click)="selectionnerImage()"><ion-icon id="icon_camera" name="camera-outline"></ion-icon>Prendre une photo</ion-button>
       </div>
     <ion-grid>
       <ion-row>
@@ -22,7 +25,7 @@
             <ion-label position="floating">
               Pseudo <span class="obligatoire">*</span>
             </ion-label>
-            <ion-input type="text" [(ngModel)]="pseudo" name="pseudo"></ion-input>
+            <ion-input type="text" [(ngModel)]="pseudo" name="pseudo" required></ion-input>
           </ion-item>
         </ion-col>
         <ion-col size-lg="6" size-md="6" size-sm="6" size="12">
@@ -30,7 +33,7 @@
             <ion-label position="floating">
               Prénom <span class="obligatoire">*</span>
             </ion-label>
-            <ion-input type="text" [(ngModel)]="prenom" name="prenom"></ion-input>
+            <ion-input type="text" [(ngModel)]="prenom" name="prenom" required></ion-input>
           </ion-item>
         </ion-col>
         <ion-col size-lg="6" size-md="6" size-sm="6" size="12">
@@ -38,7 +41,7 @@
             <ion-label position="floating">
               Nom <span class="obligatoire">*</span>
             </ion-label>
-            <ion-input type="text" [(ngModel)]="nom" name="nom"></ion-input>
+            <ion-input type="text" [(ngModel)]="nom" name="nom" required></ion-input>
           </ion-item>
         </ion-col>
         <ion-col size-lg="6" size-md="6" size-sm="6" size="12">
@@ -46,7 +49,7 @@
             <ion-label position="floating">
               Email <span class="obligatoire">*</span>
             </ion-label>
-            <ion-input type="email" [(ngModel)]="email" name="email"></ion-input>
+            <ion-input type="email" [(ngModel)]="email" name="email" required></ion-input>
           </ion-item>
         </ion-col>
         <ion-col size-lg="6" size-md="6" size-sm="6" size="12">
@@ -54,16 +57,24 @@
             <ion-label position="floating">
               Mot de passe <span class="obligatoire">*</span>
             </ion-label>
-            <ion-input type="password" [(ngModel)]="motDePasse" name="motDePasse"></ion-input>
+            <ion-input type="password" [(ngModel)]="motDePasse" name="motDePasse" required></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size-lg="6" size-md="6" size-sm="6" size="12">
+          <ion-item>
+            <ion-label position="floating">
+              Adresse <span class="obligatoire">*</span>
+            </ion-label>
+            <ion-input type="text" [(ngModel)]="adresse" name="adresse" required></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
     </ion-grid>
+    <ion-row>
+      <p id="txtChampObligatoire"><span class="obligatoire">*</span> Champs obligatoires</p>
+    </ion-row>
+    <div class="ion-text-center">
+      <ion-button id="buttonInscription" color="primary" type="submit" (click)="creerUnCompte()">S'inscrire</ion-button>
+    </div>
   </form>
-  <ion-row>
-    <p id="txtChampObligatoire">* Champs obligatoires</p>
-  </ion-row>
-  <div class="ion-text-center">
-    <ion-button id="buttonInscription" color="primary" (click)="creerUnCompte()">S'inscrire</ion-button>
-  </div>
 </ion-content>

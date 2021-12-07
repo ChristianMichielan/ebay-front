@@ -48,7 +48,6 @@ export class InscriptionPage implements OnInit {
   /***** Gestion envoi des données pour la création du compte  *****/
 
   async creerUnCompte() {
-    this.obtenirAdresseParGeolocalisation().then( result => {
       this.http.post(this.url + '/utilisateur', {pseudoU: this.pseudo, nomU: this.nom,
         prenomU: this.prenom, motDePasseU: this.motDePasse, mailU: this.email, geolocalisationLatU: this.geoLocLat,
         geolocalisationLongU: this.geoLocLong, adresseU: this.adresse
@@ -57,12 +56,15 @@ export class InscriptionPage implements OnInit {
           const resultat = Object.values(data);
           // On récupère l'id de l'utilisateur qui vient d'être inséré avec la requête post pour pouvoir lui ajouter sa photo
           const idUtilisateur = resultat[0];
-          // Upload de l'image de profil pour l'utilisateur qui a été ajouté
-          this.startUpload(idUtilisateur).then( result2 => {
+          if (this.images[this.images.length - 1] !== undefined) {
+            // Upload de l'image de profil pour l'utilisateur qui a été ajouté
+            this.startUpload(idUtilisateur).then( result2 => {
+              window.location.replace('/navigation');
+            });
+          } else {
             window.location.replace('/navigation');
-          });
+          }
         }
-      });
       });
   }
 
@@ -73,6 +75,7 @@ export class InscriptionPage implements OnInit {
     this.geolocation.getCurrentPosition().then((resp) => {
       this.geoLocLat = resp.coords.latitude;
       this.geoLocLong = resp.coords.longitude;
+      this.obtenirAdresseParGeolocalisation();
     }).catch((error) => {
       console.log('Impossible de récupérer la géolocalisation', error);
     });

@@ -1,17 +1,97 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 3
+      Mes enchères
     </ion-title>
   </ion-toolbar>
+
+  <!-- Segment avec les différentes sections offertes à l'utilisateur -->
+  <ion-segment (ionChange)="segmentChanged($event)" [(ngModel)]="segmentModel" value={{segmentModel}}>
+    <ion-segment-button value="en_cours">
+      <ion-label>En cours</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="livrer">
+      <ion-label>Livraisons</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="vendre">
+      <ion-label>A vendre</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  <!-- Barre de chargement -->
+  <ion-progress-bar *ngIf="this.bienUtilisateur === null" type="indeterminate"></ion-progress-bar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <!-- Rafraichit les annonces du segment sélectionné -->
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+  <!-- Affiches les annonces récupérées -->
+  <div *ngIf="this.bienUtilisateur !== null">
+    <div [ngSwitch]="segmentModel">
+      <!-- Aucun bien trouvé pour la section en cours -->
+      <div *ngIf="this.bienUtilisateur.length === 0" id="message-container">
+        {{ this.messageAucunBien() }}
+        <br/>
+        <br/>
+        <ion-icon name="{{this.messageAucunBienIcon()}}" size="large"></ion-icon>
+      </div>
+
+      <!-- Liste des biens sur lesquels l'utilisateur a réalisé une enchère -->
+      <div *ngIf="this.bienUtilisateur.length > 0">
+        <ion-list *ngSwitchCase="'en_cours'">
+          <ion-item *ngFor="let bien of bienUtilisateur">
+            <ion-avatar slot="start">
+              <img [src]="bien.photoB">
+            </ion-avatar>
+            <ion-label>
+              <h2>{{ bien.nomB }}</h2>
+              <p>{{ bien.descriptionB }}</p>
+              <p>{{ bien.prix }}€</p>
+              <p *ngIf="bien.compteurMinute !== 0 || bien.compteurSeconde !== 0" style="color:{{ this.couleurCompteur(bien.compteurMinute) }}">
+                {{ bien.compteurMinute }} : {{ bien.compteurSeconde }}
+              </p>
+              <p *ngIf="bien.compteurMinute === 0 && bien.compteurSeconde === 0" style="color: red">
+                Vente terminée
+              </p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+
+      <!-- Liste des biens acheté par l'utilisateur et qui sont encours de livraison ou livré -->
+      <div *ngIf="this.bienUtilisateur.length > 0">
+        <ion-list *ngSwitchCase="'livrer'">
+          <ion-item *ngFor="let bien of bienUtilisateur">
+            <ion-avatar slot="start">
+              <img [src]="bien.photoB">
+            </ion-avatar>
+            <ion-label>
+              <h2>{{ bien.nomB }}</h2>
+              <p>{{ bien.descriptionB }}</p>
+              <p style="color:{{ this.couleurEtatLivraison(bien.etatB) }}">{{ this.formaterEtatAffaireLivraison(bien.etatB) }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+
+      <!-- Liste des biens à vendre et ou vendu pas l'utilisateur -->
+      <div *ngIf="this.bienUtilisateur.length > 0">
+        <ion-list *ngSwitchCase="'vendre'">
+          <ion-item *ngFor="let bien of bienUtilisateur" (click)="afficherFormulaireLivraison(bien.idB, bien.etatB)">
+            <ion-avatar slot="start">
+              <img [src]="bien.photoB">
+            </ion-avatar>
+            <ion-label>
+              <h2>{{ bien.nomB }}</h2>
+              <p>{{ bien.descriptionB }}</p>
+              <p>{{ bien.prix }} €</p>
+              <p style="color:{{ this.couleurEtatAVendre(bien.etatB) }}">{{ this.formaterEtatAffaireAVendre(bien.etatB) }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+    </div>
+  </div>
 </ion-content>

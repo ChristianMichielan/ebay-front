@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/navigation/annonces" icon="chevron-back-outline"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Détail</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="ion-text-center">
+    <img [src]="photoB" alt="" id="photoBien">
+  </div>
+  <div class="ion-text-left">
+    <h3 class="align-left">{{nomB}}</h3>
+    <h5 class="align-left" *ngIf="prixEnchereCourante !== null">{{ prixEnchereCourante }}€</h5>
+    <h5 class="align-left" *ngIf="prixEnchereCourante === null">{{ prixPlancherB }}€</h5>
+  </div>
+  <div class="ion-text-center">
+    <p>{{ descriptionB }}</p>
+  </div>
+  <ion-item>
+    <ion-label position="floating">
+      <ion-icon name="card-outline"></ion-icon>
+      Enchérir
+    </ion-label>
+    <ion-input [disabled]="this.idU == this.utilisateurIdU" type="number" name="prix" required [(ngModel)]="prixProposeEnchere"></ion-input>
+  </ion-item>
+  <div class="ion-text-center">
+    <ion-button class="btn_encherir" (click)="encherir()">Faire une enchère</ion-button>
+  </div>
+</ion-content>
