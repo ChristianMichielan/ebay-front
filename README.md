@@ -1,2 +1,17 @@
-# ebay-front
-.
+# Projet M2 MIAGE - Ebay Front
+
+Ce projet a pour objectif de mettre en pratique la création d’une application mobile multi-plateforme. Ebay est une PWA qui s’inspire du site web éponyme. 
+La partie Front-end de Ebay propose les différentes interfaces de l’application.
+Elle nécessite que le back soit installé et lancé pour fonctionner.
+Le projet utilise Angular avec Ionic Capacitor.
+
+## Lancer le projet
+Dans un invite de commande :
+
+npm install
+
+ionic serve
+
+## Documentation API
+
+Swagger disponible à l'URL suivante : https://app.swaggerhub.com/apis/christian.michielan/Ebay/1.0.0#/
