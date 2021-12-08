@@ -73,6 +73,17 @@ export class AnnoncesPage implements OnInit {
       });
   }
 
+  /**
+   * Rafraichit l'écran à l'aide du refresher
+   *
+   * @param event
+   */
+  doRefresh(event) {
+    this.getBiens();
+    // Fin de l'animation de chargement
+    event.target.complete();
+  }
+
   readApi(url: string) {
     return this.http.get(url);
   }
