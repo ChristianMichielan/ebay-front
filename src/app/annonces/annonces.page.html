@@ -7,19 +7,22 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Annonces</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <!-- Rafraichit les annonces du segment sélectionné -->
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 
+  <!-- Barre de recherche -->
   <ion-searchbar (ionInput)="filterList($event)" placeholder="Rechercher"></ion-searchbar>
   <div *ngIf="this.aBiens.length === 0" id="message-container">
-    <p>Aucune annonce disponible</p>
-    <br>
-    <ion-icon name="alarm" size="large"></ion-icon>
+    Aucune annonce disponible
+    <br/>
+    <br/>
+    <ion-icon name="search" size="large"></ion-icon>
   </div>
-  <ion-list>
+
+  <!-- Affiche les annonces disponible dans le système -->
+  <ion-list *ngIf="this.aBiens.length !== 0">
     <ion-item *ngFor="let bien of aBiens" (click)="afficherDetail(bien.idB)">
       <ion-avatar slot="start">
         <img [src]="bien.photoB">
