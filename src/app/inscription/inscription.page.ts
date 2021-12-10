@@ -59,10 +59,10 @@ export class InscriptionPage implements OnInit {
           if (this.images[this.images.length - 1] !== undefined) {
             // Upload de l'image de profil pour l'utilisateur qui a été ajouté
             this.startUpload(idUtilisateur).then( result2 => {
-              window.location.replace('/navigation');
+              window.location.replace('/');
             });
           } else {
-            window.location.replace('/navigation');
+            window.location.replace('/');
           }
         }
       });
