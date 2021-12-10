@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-connexion',
@@ -18,16 +18,28 @@ export class ConnexionPage implements OnInit {
   ngOnInit() {
   }
 
-  connecter() {
-    this.http.post(this.url + '/token', {pseudoU: this.pseudo, motDePasseU: this.motDePasse}).subscribe(data => {
-      this.reponse = data;
-      if (data !== undefined) {
-        let utilisateur = [];
-        utilisateur = Object.values(data);
-        localStorage.setItem('idU', utilisateur[0]);
-        window.location.replace('/navigation');
-      }
-    });
+  validate(){
+    return true;
   }
 
+  connecter() {
+    
+      this.http.post(this.url + '/token', {pseudoU: this.pseudo, motDePasseU: this.motDePasse}).subscribe(data => {
+        this.reponse = data as {idU: string, pseudoU: string, token: string};
+
+        localStorage.setItem('idU', this.reponse.idU)
+        localStorage.setItem('pseudoU', this.reponse.pseudoU)
+        localStorage.setItem('token', this.reponse.token)
+
+        // if (data !== undefined) {
+        //   let utilisateur = [];
+        //   utilisateur = Object.values(data);
+        //   localStorage.setItem('idU', utilisateur[0]);
+        window.location.replace('/navigation');
+        // }
+      },
+      (error: HttpErrorResponse) =>{
+        console.log(error.error)
+      })
+  }
 }

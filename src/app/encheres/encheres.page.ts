@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {DomSanitizer} from "@angular/platform-browser";
 import {interval, Observable} from 'rxjs';
 import {takeWhile} from "rxjs/operators";
@@ -153,12 +153,20 @@ export class EncheresPage implements OnInit, OnDestroy{
         });
       });
   }
+  //verify token
+  getHeaders(){
+    const token = localStorage.getItem('token');
+    return token? new HttpHeaders().set('Authorization', 'Bearer ' + token) :null
+  }
 
   /**
    * Execute la requête API
    * @param url
    */
   readApi(url: string) {
+    let headers =this.getHeaders();
+    if(headers instanceof HttpHeaders)
+      return this.http.get(url, {headers :headers})
     return this.http.get(url);
   }
 

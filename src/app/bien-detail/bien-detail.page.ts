@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
 @Component({
   selector: 'app-bien-detail',
@@ -28,8 +28,16 @@ export class BienDetailPage implements OnInit {
   ngOnInit() {
     this.obtenirDetailBien();
   }
+  //recuperer token pour envoyer avec la request
+  getHeaders(){
+    const token = localStorage.getItem('token');
+    return token? new HttpHeaders().set('Authorization', 'Bearer ' + token) :null
+  }
 
   readApi(url: string) {
+    let headers =this.getHeaders();
+    if(headers instanceof HttpHeaders)
+      return this.http.get(url, {headers :headers})
     return this.http.get(url);
   }
 

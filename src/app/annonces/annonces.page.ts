@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router} from '@angular/router';
 
@@ -15,8 +15,14 @@ export class AnnoncesPage implements OnInit {
 
   constructor(public http: HttpClient, private sanitizer: DomSanitizer, private router: Router) {}
 
+
   ngOnInit() {
     this.getBiens();
+  }
+  //recuperer token pour envoyer avec la request
+  getHeaders(){
+    const token = localStorage.getItem('token');
+    return token? new HttpHeaders().set('Authorization', 'Bearer ' + token) :null
   }
 
   getBiens() {
@@ -29,10 +35,17 @@ export class AnnoncesPage implements OnInit {
             + bien.photoB);
         });
         this.aBiensBackup = Object.values(data)[0];
-      });
+      },
+      (error: HttpErrorResponse) =>{
+        window.location.replace('/');
+      }
+      );
   }
 
   readApi(url: string) {
+    let headers =this.getHeaders();
+    if(headers instanceof HttpHeaders)
+      return this.http.get(url, {headers :headers})
     return this.http.get(url);
   }
 

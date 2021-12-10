@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -21,11 +21,17 @@ export class ProfilPage implements OnInit {
   photoU;
   idU;
   constructor(public alertController: AlertController,private router: Router,
-              private httpClient: HttpClient , private sanitizer: DomSanitizer, private activatedRoute: ActivatedRoute ) {
+              private http: HttpClient , private sanitizer: DomSanitizer, private activatedRoute: ActivatedRoute ) {
   }
 
   ngOnInit() {
     this.getInfoUser();
+  }
+
+  //verify token
+  getHeaders(){
+    const token = localStorage.getItem('token');
+    return token? new HttpHeaders().set('Authorization', 'Bearer ' + token) :null
   }
 
   getInfoUser(){
@@ -44,11 +50,17 @@ export class ProfilPage implements OnInit {
         // Traitement de l'image base64 pour la convertir en image visualisable sur le front
         this.photoU = this.sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,'
             + this.profil[0].photoU);
+      },
+      (error: HttpErrorResponse) =>{
+        window.location.replace('/');
       });
   }
 
   readApi(url: string) {
-    return this.httpClient.get(url);
+    let headers =this.getHeaders();
+    if(headers instanceof HttpHeaders)
+      return this.http.get(url, {headers :headers})
+    return this.http.get(url);
   }
 
   async logout() {
