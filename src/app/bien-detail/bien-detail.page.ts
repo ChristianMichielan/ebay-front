@@ -28,12 +28,14 @@ export class BienDetailPage implements OnInit {
 
   /**
    * Constructeur
+   *
    * @param http
    * @param sanitizer
    * @param activatedRoute
    * @param toastController
    */
-  constructor(public http: HttpClient, private sanitizer: DomSanitizer, private activatedRoute: ActivatedRoute, public toastController: ToastController) { }
+  constructor(public http: HttpClient, private sanitizer: DomSanitizer,
+              private activatedRoute: ActivatedRoute, public toastController: ToastController) { }
 
   /**
    * Initialisation de la page
@@ -45,6 +47,7 @@ export class BienDetailPage implements OnInit {
 
   /**
    * Interroge l'API
+   *
    * @param url
    */
   readApi(url: string) {
@@ -80,7 +83,7 @@ export class BienDetailPage implements OnInit {
    */
   async encherir() {
     // On peut enchérir uniquement si le prix du bien est supérieur à celui proposé
-    if (this.prixProposeEnchere > this.prixEnchereCourante) {
+    if (this.prixProposeEnchere > this.prixEnchereCourante && this.prixProposeEnchere > this.prixPlancherB) {
       this.idB = this.activatedRoute.snapshot.paramMap.get('idB');
       this.http.post(this.url + '/utilisateur/' + this.idU + '/enchere',
         {idB: this.idB, prix: this.prixProposeEnchere}).subscribe(data => {
