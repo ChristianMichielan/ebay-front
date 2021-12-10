@@ -23,9 +23,9 @@
       <ion-icon name="card-outline"></ion-icon>
       Enchérir
     </ion-label>
-    <ion-input [disabled]="this.idU == this.utilisateurIdU" type="number" name="prix" required [(ngModel)]="prixProposeEnchere"></ion-input>
+    <ion-input type="number" [disabled]="this.idU == this.utilisateurIdU" name="prix" required [(ngModel)]="prixProposeEnchere"></ion-input>
   </ion-item>
   <div class="ion-text-center">
-    <ion-button class="btn_encherir" (click)="encherir()">Faire une enchère</ion-button>
+    <ion-button [disabled]="this.idU == this.utilisateurIdU" class="btn_encherir" (click)="encherir()">Enchérir</ion-button>
   </div>
 </ion-content>

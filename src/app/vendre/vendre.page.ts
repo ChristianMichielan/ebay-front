@@ -123,7 +123,7 @@ export class VendrePage {
   /* Contact de l'API back-end */
   async uploadData(formData: FormData, idBien) {
     const loading = await this.loadingCtrl.create({
-      message: 'Upload en cours...',
+      message: 'Publication de l\'annonce en cours...',
     });
     await loading.present();
     const url = 'http://localhost:3000/bien/' + idBien + '/photobien';
