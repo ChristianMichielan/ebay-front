@@ -5,6 +5,10 @@ La partie Front-end de Ebay propose les différentes interfaces de l’applicati
 Elle nécessite que le back soit installé et lancé pour fonctionner.
 Le projet utilise Angular avec Ionic Capacitor.
 
+## Vidéo de présentation 
+
+Une présentation du projet est disponible à l'url suivante : https://youtu.be/jfWc4CEPflM
+
 ## Lancer le projet
 Dans un invite de commande :
 
