@@ -1,6 +1,6 @@
 # Projet M2 MIAGE - Ebay Front
 
-Ce projet a pour objectif de mettre en pratique la création d’une application mobile multi-plateforme. Ebay est une PWA qui s’inspire du site web éponyme. 
+Ce projet a pour objectif de mettre en pratique la création d’une application mobile multi-plateforme. Ebay est une application hybride qui s’inspire du site web éponyme. 
 La partie Front-end de Ebay propose les différentes interfaces de l’application.
 Elle nécessite que le back soit installé et lancé pour fonctionner.
 Le projet utilise Angular avec Ionic Capacitor.
