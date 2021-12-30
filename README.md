@@ -19,9 +19,11 @@ ionic serve
 Deux utilisateurs existent de base sur l'application pour la tester (en ayant au préalable joué le script SQL fourni dans le projet back)
 
 Identifiant : Toto31400
+
 Mdp : root
 
 Identifiant : Alain
+
 Mdp : root
 
 ## Documentation API
