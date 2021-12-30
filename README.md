@@ -16,6 +16,14 @@ npm install
 
 ionic serve
 
+Deux utilisateurs existent de base sur l'application pour la tester (en ayant au préalable joué le script SQL fourni dans le projet back)
+
+Identifiant : Toto31400
+Mdp : root
+
+Identifiant : Alain
+Mdp : root
+
 ## Documentation API
 
 Swagger disponible à l'URL suivante : https://app.swaggerhub.com/apis/christian.michielan/Ebay/1.0.0#/
