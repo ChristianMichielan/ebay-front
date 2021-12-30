@@ -16,15 +16,18 @@ npm install
 
 ionic serve
 
-Deux utilisateurs existent de base sur l'application pour la tester (en ayant au préalable joué le script SQL fourni dans le projet back)
+Deux utilisateurs existent de base sur l'application pour la tester (en ayant au préalable joué le script SQL fourni dans le projet back).
+______
 
-Identifiant : Toto31400
+###### Identifiant : Toto31400
 
-Mdp : root
+###### Mot de passe : root
+______
 
-Identifiant : Alain
+###### Identifiant : Alain
 
-Mdp : root
+###### Mot de passe : root
+______
 
 ## Documentation API
 
